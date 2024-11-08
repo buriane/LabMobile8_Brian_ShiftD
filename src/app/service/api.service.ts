@@ -13,23 +13,23 @@ export class ApiService {
     return 'http://localhost/mahasiswa';
   }
 
-  tambah(data: any, endpoint: string) {
-    return this.http.post(this.apiURL() + '/' + endpoint, data);
+  tampil(link: string): Observable<any> {
+    return this.http.get(this.apiURL() + '/' + link);
   }
 
-  edit(data: any, endpoint: string) {
-    return this.http.put(this.apiURL() + '/' + endpoint, data);
+  tambah(data: any, link: string): Observable<any> {
+    return this.http.post(this.apiURL() + '/' + link, data);
   }
 
-  tampil(endpoint: string): Observable<any> {
-    return this.http.get(this.apiURL() + '/' + endpoint);
+  edit(data: any, link: string): Observable<any> {
+    return this.http.put(this.apiURL() + '/' + link, data);
   }
 
-  hapus(id: any, endpoint: string) {
-    return this.http.delete(this.apiURL() + '/' + endpoint + '' + id);
+  hapus(id: any, link: string): Observable<any> {
+    return this.http.delete(this.apiURL() + '/' + link + id);
   }
 
-  lihat(id: any, endpoint: string) {
-    return this.http.get(this.apiURL() + '/' + endpoint + '' + id);
+  lihat(id: any, link: string): Observable<any> {
+    return this.http.get(this.apiURL() + '/' + link + id);
   }
 }

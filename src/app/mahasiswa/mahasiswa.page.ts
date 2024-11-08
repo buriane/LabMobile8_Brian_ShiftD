@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../service/api.service';
 import { ModalController, AlertController } from '@ionic/angular';
+import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mahasiswa',
@@ -11,13 +13,14 @@ export class MahasiswaPage implements OnInit {
   dataMahasiswa: any;
   modalTambah: any;
   id: any;
-  nama: any;
+  namaMahasiswa: any;
   jurusan: any;
   modalEdit: any;
+  namaUser: any;
 
   resetModal() {
     this.id = null;
-    this.nama = '';
+    this.namaMahasiswa = '';
     this.jurusan = '';
   }
   
@@ -44,7 +47,7 @@ export class MahasiswaPage implements OnInit {
     this.resetModal();
   }
 
-  constructor(private api: ApiService, private modal: ModalController, private alertController: AlertController) { }
+  constructor(private api: ApiService, private modal: ModalController, private alertController: AlertController, private authService: AuthenticationService, private router: Router) { this.namaUser = this.authService.nama }
 
   ngOnInit() {
     this.getMahasiswa();
@@ -54,10 +57,18 @@ export class MahasiswaPage implements OnInit {
     this.api.tampil('tampil.php').subscribe({
       next: (res: any) => {
         console.log('sukses', res);
-        this.dataMahasiswa = res;
+        this.dataMahasiswa = res.filter((item: any) => 
+          item && item.nama && item.jurusan && 
+          item.nama.trim() !== '' && item.jurusan.trim() !== ''
+        );
       },
       error: (err: any) => {
-        console.log(err);
+        console.log('Error:', err);
+        this.alertController.create({
+          header: 'Error',
+          message: 'Gagal mengambil data: ' + err.message,
+          buttons: ['OK']
+        }).then(alert => alert.present());
       },
     });
   }
@@ -86,23 +97,25 @@ export class MahasiswaPage implements OnInit {
   }
 
   async tambahMahasiswa() {
-    if (this.nama != '' && this.jurusan != '') {
+    if (this.namaMahasiswa != '' && this.jurusan != '') {
       let data = {
-        nama: this.nama,
+        nama: this.namaMahasiswa,
         jurusan: this.jurusan,
       }
       this.api.tambah(data, 'tambah.php')
         .subscribe({
           next: async (hasil: any) => {
-            this.resetModal();
-            console.log('berhasil tambah mahasiswa');
-            this.getMahasiswa();
             this.modalTambah = false;
             this.modal.dismiss();
+            this.resetModal();
+            await new Promise(resolve => {
+              this.getMahasiswa();
+              resolve(true);
+            });
 
             const alert = await this.alertController.create({
               header: 'Sukses',
-              message: `Data mahasiswa ${this.nama} berhasil ditambahkan`,
+              message: `Data mahasiswa ${this.namaMahasiswa} berhasil ditambahkan`,
               buttons: ['OK']
             });
   
@@ -153,7 +166,7 @@ export class MahasiswaPage implements OnInit {
           console.log('sukses', hasil);
           let mahasiswa = hasil;
           this.id = mahasiswa.id;
-          this.nama = mahasiswa.nama;
+          this.namaMahasiswa = mahasiswa.nama;
           this.jurusan = mahasiswa.jurusan;
         },
         error: (error: any) => {
@@ -163,10 +176,10 @@ export class MahasiswaPage implements OnInit {
   }
 
   async editMahasiswa() {
-    if (this.nama != '' && this.jurusan != '') {
+    if (this.namaMahasiswa != '' && this.jurusan != '') {
       let data = {
         id: this.id,
-        nama: this.nama,
+        nama: this.namaMahasiswa,
         jurusan: this.jurusan
       }
       this.api.edit(data, 'edit.php')
@@ -178,10 +191,10 @@ export class MahasiswaPage implements OnInit {
             console.log('berhasil edit Mahasiswa');
             this.modalEdit = false;
             this.modal.dismiss();
-            
+
             const alert = await this.alertController.create({
               header: 'Sukses',
-              message: `Data mahasiswa ${this.nama} berhasil diubah`,
+              message: `Data mahasiswa ${this.namaMahasiswa} berhasil diubah`,
               buttons: ['OK']
             });
   
@@ -211,4 +224,8 @@ export class MahasiswaPage implements OnInit {
     }
   }
 
+  logout() {
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
+  }
 }

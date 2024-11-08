@@ -11,6 +11,13 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-item (click)="logout()">
+    <ion-icon slot="start" ios="exit-outline" md="exit-sharp"></ion-icon>
+    <ion-label>Logout</ion-label>
+  </ion-item>
+  <hr>
+  Selamat datang {{ namaUser }}
+
   <!-- button tambah -->
   <ion-card>
     <ion-button (click)="openModalTambah(true)" expand="block">Tambah Mahasiswa <ion-icon name="add-circle-outline"></ion-icon></ion-button>
@@ -28,7 +35,7 @@
       </ion-header>
       <ion-content class="ion-padding">
         <ion-item>
-          <ion-input label="Nama Mahasiswa" labelPlacement="floating" required [(ngModel)]="nama"
+          <ion-input label="Nama Mahasiswa" labelPlacement="floating" required [(ngModel)]="namaMahasiswa"
             placeholder="Masukkan Nama Mahasiswa" type="text">
           </ion-input>
         </ion-item>
@@ -60,7 +67,7 @@
       </ion-header>
       <ion-content class="ion-padding">
         <ion-item>
-          <ion-input label="Nama Mahasiswa" labelPlacement="floating" required [(ngModel)]="nama"
+          <ion-input label="Nama Mahasiswa" labelPlacement="floating" required [(ngModel)]="namaMahasiswa"
             placeholder="Masukkan Nama Mahasiswa" type="text">
           </ion-input>
         </ion-item>
@@ -83,13 +90,17 @@
   </ion-modal>
 
   <ion-card *ngFor="let item of dataMahasiswa">
-    <ion-item>
+    <ion-item *ngIf="item && item.nama && item.jurusan">
       <ion-label>
         {{item.nama}}
         <p>{{item.jurusan}}</p>
       </ion-label>
-      <ion-button expand="block" (click)="openModalEdit(true,item.id)"><ion-icon name="create-outline"></ion-icon></ion-button>
-      <ion-button color="danger" slot="end" (click)="konfirmasiHapus(item.id)"><ion-icon name="trash-outline"></ion-icon></ion-button>  
+      <ion-button expand="block" (click)="openModalEdit(true,item.id)">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="danger" slot="end" (click)="konfirmasiHapus(item.id)">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>  
     </ion-item>
   </ion-card>
 </ion-content>
