@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Data Mahasiswa</ion-title>
+    <ion-title><ion-icon class="person-icon" name="person-outline"></ion-icon> Data Mahasiswa</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +13,7 @@
 
   <!-- button tambah -->
   <ion-card>
-    <ion-button (click)="openModalTambah(true)" expand="block">Tambah Mahasiswa</ion-button>
+    <ion-button (click)="openModalTambah(true)" expand="block">Tambah Mahasiswa <ion-icon name="add-circle-outline"></ion-icon></ion-button>
   </ion-card>
   <!-- modal tambah -->
   <ion-modal [isOpen]="modalTambah" (ionModalDidDismiss)="cancel()">
@@ -21,7 +21,7 @@
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Batal</ion-button>
+            <ion-button (click)="cancel()"><ion-icon name="close-outline"></ion-icon></ion-button>
           </ion-buttons>
           <ion-title>Tambah Mahasiswa</ion-title>
         </ion-toolbar>
@@ -53,7 +53,7 @@
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Batal</ion-button>
+            <ion-button (click)="cancel()"><ion-icon name="close-outline"></ion-icon></ion-button>
           </ion-buttons>
           <ion-title>Edit Mahasiswa</ion-title>
         </ion-toolbar>
@@ -88,8 +88,8 @@
         {{item.nama}}
         <p>{{item.jurusan}}</p>
       </ion-label>
-      <ion-button expand="block" (click)="openModalEdit(true,item.id)">Edit</ion-button>
-      <ion-button color="danger" slot="end" (click)="konfirmasiHapus(item.id)">Hapus</ion-button>  
+      <ion-button expand="block" (click)="openModalEdit(true,item.id)"><ion-icon name="create-outline"></ion-icon></ion-button>
+      <ion-button color="danger" slot="end" (click)="konfirmasiHapus(item.id)"><ion-icon name="trash-outline"></ion-icon></ion-button>  
     </ion-item>
   </ion-card>
 </ion-content>

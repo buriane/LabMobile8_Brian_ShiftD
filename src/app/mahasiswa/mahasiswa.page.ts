@@ -85,7 +85,7 @@ export class MahasiswaPage implements OnInit {
     await alert.present();
   }
 
-  tambahMahasiswa() {
+  async tambahMahasiswa() {
     if (this.nama != '' && this.jurusan != '') {
       let data = {
         nama: this.nama,
@@ -93,18 +93,41 @@ export class MahasiswaPage implements OnInit {
       }
       this.api.tambah(data, 'tambah.php')
         .subscribe({
-          next: (hasil: any) => {
+          next: async (hasil: any) => {
             this.resetModal();
             console.log('berhasil tambah mahasiswa');
             this.getMahasiswa();
             this.modalTambah = false;
             this.modal.dismiss();
+
+            const alert = await this.alertController.create({
+              header: 'Sukses',
+              message: `Data mahasiswa ${this.nama} berhasil ditambahkan`,
+              buttons: ['OK']
+            });
+  
+            await alert.present();
           },
-          error: (err: any) => {
+          error: async (err: any) => {
             console.log('gagal tambah mahasiswa');
+
+            const alert = await this.alertController.create({
+              header: 'Error',
+              message: 'Gagal menambahkan data mahasiswa',
+              buttons: ['OK']
+            });
+  
+            await alert.present();
           }
         })
     } else {
+      const alert = await this.alertController.create({
+        header: 'Peringatan',
+        message: 'Nama dan jurusan harus diisi',
+        buttons: ['OK']
+      });
+  
+      await alert.present();
       console.log('gagal tambah mahasiswa karena masih ada data yg kosong');
     }
   }
@@ -139,26 +162,53 @@ export class MahasiswaPage implements OnInit {
       })
   }
 
-  editMahasiswa() {
-    let data = {
-      id: this.id,
-      nama: this.nama,
-      jurusan: this.jurusan
+  async editMahasiswa() {
+    if (this.nama != '' && this.jurusan != '') {
+      let data = {
+        id: this.id,
+        nama: this.nama,
+        jurusan: this.jurusan
+      }
+      this.api.edit(data, 'edit.php')
+        .subscribe({
+          next: async (hasil: any) => {
+            console.log(hasil);
+            this.resetModal();
+            this.getMahasiswa();
+            console.log('berhasil edit Mahasiswa');
+            this.modalEdit = false;
+            this.modal.dismiss();
+            
+            const alert = await this.alertController.create({
+              header: 'Sukses',
+              message: `Data mahasiswa ${this.nama} berhasil diubah`,
+              buttons: ['OK']
+            });
+  
+            await alert.present();
+          },
+          error: async (err: any) => {
+            console.log('gagal edit Mahasiswa');
+            
+            const alert = await this.alertController.create({
+              header: 'Error',
+              message: 'Gagal mengubah data mahasiswa',
+              buttons: ['OK']
+            });
+  
+            await alert.present();
+          }
+        })
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Peringatan',
+        message: 'Nama dan jurusan harus diisi',
+        buttons: ['OK']
+      });
+  
+      await alert.present();
+      console.log('gagal edit mahasiswa karena masih ada data yg kosong');
     }
-    this.api.edit(data, 'edit.php')
-      .subscribe({
-        next: (hasil: any) => {
-          console.log(hasil);
-          this.resetModal();
-          this.getMahasiswa();
-          console.log('berhasil edit Mahasiswa');
-          this.modalEdit = false;
-          this.modal.dismiss();
-        },
-        error: (err: any) => {
-          console.log('gagal edit Mahasiswa');
-        }
-      })
   }
 
 }
