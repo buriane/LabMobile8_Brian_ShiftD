@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/465618fa-2912-457e-ad64-f2ffacfc0696)# Proses CRUD Mahasiswa + Auth Login
+# Proses CRUD Mahasiswa + Auth Login
 
 Nama: Brian Cahya Purnama
 
