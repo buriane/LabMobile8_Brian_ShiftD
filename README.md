@@ -21,7 +21,7 @@ Shift Baru: D
   - Field password menggunakan ion-input type="password" untuk keamanan
   - Tombol login menggunakan ion-button dengan warna primary dan mode expand="block"
 - **Validasi Input**
-  ```
+  ```typescript
   if (this.username != null && this.password != null) {
     // Proses login
   } else {
@@ -55,7 +55,7 @@ menyimpan data autentikasi menggunakan saveData()
     - Tombol aksi (edit & hapus) untuk setiap data
     - Menggunakan metode GET dengan endpoint 'tampil.php'
 - **Implementasi Get Data**
-    ```
+    ```typescript
     getMahasiswa() {
       this.api.tampil('tampil.php').subscribe({
         next: (res: any) => {
@@ -82,7 +82,7 @@ menyimpan data autentikasi menggunakan saveData()
     - Tombol close dan submit
     - Menggunakan metode POST dengan endpoint 'tambah.php'
 - **Proses Tambah Data**
-    ```
+    ```typescript
     async tambahMahasiswa() {
       if (this.namaMahasiswa != '' && this.jurusan != '') {
         let data = {
@@ -161,7 +161,7 @@ menyimpan data autentikasi menggunakan saveData()
 |:---:|:---:|
 | <img src="https://github.com/user-attachments/assets/b2179ed4-d8d0-4f27-b186-8dbed20aee11" width="400"> | <img src="https://github.com/user-attachments/assets/339a8abe-c735-46a6-bf3f-662df5561e1c" width="400"> |
 - **Konfirmasi Penghapusan**
-    ```
+    ```typescript
     async konfirmasiHapus(id: any) {
       const alert = await this.alertController.create({
         header: 'Konfirmasi',
@@ -181,7 +181,7 @@ menyimpan data autentikasi menggunakan saveData()
     }
     ```
 - **Menghapus data langsung dari database melalui API**
-    ```
+    ```typescript
     hapusMahasiswa(id: any) {
       this.api.hapus(id, 'hapus.php?id=').subscribe({
         next: (res: any) => {
@@ -208,7 +208,7 @@ menyimpan data autentikasi menggunakan saveData()
 | <img src="https://github.com/user-attachments/assets/20e7f0cc-2f51-426b-9458-9547cf8e90a9" width="500"> |
 
 - **Implementasi Logout**
-    ```
+    ```typescript
     logout() {
       this.authService.logout();
       this.router.navigateByUrl('/login');
@@ -222,7 +222,7 @@ menyimpan data autentikasi menggunakan saveData()
 
 ## Database
 #### Tabel Mahasiswa
-```
+```sql
 CREATE TABLE mahasiswa (
   id int PRIMARY KEY AUTO_INCREMENT,
   nama varchar(255) NOT NULL,
@@ -230,7 +230,7 @@ CREATE TABLE mahasiswa (
 );
 ```
 #### Tabel User
-```
+```sql
 CREATE TABLE user (
     username varchar(100) NOT NULL,
     password varchar(255) NOT NULL
