@@ -50,6 +50,7 @@ menyimpan data autentikasi menggunakan saveData()
 - **Struktur**
 
     - Header dengan icon person dan judul "Data Mahasiswa"
+    - Mengimplementasikan ionicon pada create update delete agar tampilan lebih menarik
     - Informasi user yang sedang login
     - Daftar mahasiswa dalam format card
     - Tombol aksi (edit & hapus) untuk setiap data
